@@ -1,0 +1,34 @@
+#app_identifier "com.nmtx.chanxiaobang" # The bundle identifier of your app
+#apple_id "server@nmtx.com" # Your Apple email address
+
+#team_id "[[DEV_PORTAL_TEAM_ID]]"  # Developer Portal Team ID
+
+# you can even provide different app identifiers, Apple IDs and team names per lane:
+# More information: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Appfile.md
+
+lane :screens do
+    snapshot
+ end
+
+
+lane :certs do
+    match(app_identifier: "com.nmtx.chanxiaobang", type: "adhoc")
+  end
+
+
+lane :beta do
+  cocoapods
+#match(app_identifier: "com.nmtx.chanxiaobang", type: "adhoc")
+  gym(scheme: "chanxiaobang",
+      workspace: "chanxiaobang.xcworkspace",
+      configuration: "Release",
+      include_bitcode: false)
+end
+
+
+desc "Upload to App Store and submit for review"
+lane :upload do
+  deliver(
+    submit_for_review: true
+  )
+end
